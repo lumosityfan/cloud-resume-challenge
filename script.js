@@ -7,7 +7,7 @@ const data = {
  };
 
 fetch(apiEndpoint, {
-    method: 'GET', // or 'POST' if you want to send data
+    method: 'POST', // or 'POST' if you want to send data
     headers: {
         'Content-Type': 'application/json',
     },
