@@ -12,6 +12,7 @@ fetch(apiEndpointGet, {
 })
 .then(response => response.json())
 .then(data => {
+    console.log('Success:', data);
     visitorCountObject = data
 })
 .catch((error) => console.error('Error:', error));
