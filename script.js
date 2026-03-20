@@ -19,8 +19,8 @@ async function fetchAndPost() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 counter: newVisitorCount,
-                id: data.id,
-                name: data.name 
+                id: data[0].id,
+                name: data[0].name 
             }),
         });
         if (!postResponse.ok) throw new Error(`POST request failed: ${postResponse.statusText}`);
