@@ -33,7 +33,7 @@ async function fetchAndPost() {
     }
 }
 
-fetchAndPost();
+fetchAndPost().then(() => console.log('Visitor count updated successfully.'))
 
 // // Get initial visitor count
 // fetch(apiEndpointGet, {
