@@ -1,23 +1,55 @@
 // Example using fetch in your static site's JavaScript
 const apiEndpointGet = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/visitor-counter';
 const apiEndpointPost = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/';
-let visitorCountObject
+// let visitorCountObject;
 
-// Get initial visitor count
-fetch(apiEndpointGet, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-})
-.then(response => response.json())
-.then(data => {
-    console.log('Success:', data);
-    visitorCountObject = data
-})
-.catch((error) => console.error('Error:', error));
+async function fetchAndPost() {
+    try {
+        // 1. GET requst
+        const getResponse = await fetch(apiEndpointGet);
+        if (!getResponse.ok) throw new Error(`GET request failed: ${getResponse.statusText}`);
+        const data = await getResponse.json();
 
-console.log(visitorCountObject)
+        console.log('GET Success:', data);
+        
+        // 2. POST request
+        const newVisitorCount = data.counter + 1;
+        const postResponse = await fetch(apiEndpointPost, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                counter: newVisitorCount,
+                id: data.id,
+                name: data.name 
+            }),
+        });
+        if (!postResponse.ok) throw new Error(`POST request failed: ${postResponse.statusText}`);
+        const postData = await postResponse.json();
+
+        console.log('POST Success:', postData);
+        document.getElementById('visitor-count').textContent = newVisitorCount;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+fetchAndPost();
+
+// // Get initial visitor count
+// fetch(apiEndpointGet, {
+//     method: 'GET',
+//     headers: {
+//         'Content-Type': 'application/json',
+//     },
+// })
+// .then(response => response.json())
+// .then(data => {
+//     visitorCountObject = data;
+//     console.log('Success:', visitorCountObject);
+
+// })
+// .catch((error) => console.error('Error:', error));
+
 // const newVisitorCount = visitorCountObject.counter + 1;
 
 // // Update visitor count
