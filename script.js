@@ -7,10 +7,10 @@ const apiEndpoint = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/visi
 //  };
 
 fetch(apiEndpoint, {
-    method: 'GET', // or 'POST' if you want to send data
+    method: 'GET',
     headers: {
         'Content-Type': 'application/json',
     },
 })
-.then(response => console.log('Response:', response))
+.then(response => console.log('Response:', response.json()))
 .catch((error) => console.error('Error:', error));
