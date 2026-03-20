@@ -12,5 +12,10 @@ fetch(apiEndpoint, {
         'Content-Type': 'application/json',
     },
 })
-.then(response => console.log('Response:', response.json()))
+.then(response => response.json())
+.then(data => {
+    console.log('Visitor count:', data);
+    // Update your webpage with the visitor count
+    document.getElementById('visitor-count').textContent = `Visitor Count: ${data.counter}`;
+})
 .catch((error) => console.error('Error:', error));
