@@ -1,6 +1,7 @@
 // Example using fetch in your static site's JavaScript
 const apiEndpointGet = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/visitor-counter';
 const apiEndpointPost = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/';
+let visitorCountObject
 
 // Get initial visitor count
 fetch(apiEndpointGet, {
@@ -11,7 +12,7 @@ fetch(apiEndpointGet, {
 })
 .then(response => response.json())
 .then(data => {
-    const visitorCountObject = {
+    visitorCountObject = {
         counter: data[0].counter,
         id: data[0].id,
         name: data[0].name
