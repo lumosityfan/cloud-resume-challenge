@@ -12,11 +12,7 @@ fetch(apiEndpointGet, {
 })
 .then(response => response.json())
 .then(data => {
-    visitorCountObject = {
-        counter: data[0].counter,
-        id: data[0].id,
-        name: data[0].name
-    };
+    visitorCountObject = data
 })
 .catch((error) => console.error('Error:', error));
 
