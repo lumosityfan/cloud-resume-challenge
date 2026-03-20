@@ -1,5 +1,5 @@
 // Example using fetch in your static site's JavaScript
-const apiEndpoint = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/lists';
+const apiEndpoint = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/';
 const data = { 
     counter: 1,
     id: 'visitor-counter',
