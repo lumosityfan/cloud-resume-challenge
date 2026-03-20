@@ -20,22 +20,23 @@ fetch(apiEndpointGet, {
 })
 .catch((error) => console.error('Error:', error));
 
-const newVisitorCount = visitorCountObject.counter + 1;
+console.log(visitorCountObject)
+// const newVisitorCount = visitorCountObject.counter + 1;
 
-// Update visitor count
-fetch(apiEndpointPost, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ 
-        counter: newVisitorCount,
-        id: visitorCountObject.id,
-        name: visitorCountObject.name }),
-})
-.then(response => response.json())
-.then(data => {
-    console.log('Success:', data);
-    document.getElementById('visitor-count').textContent = newVisitorCount;
-})
-.catch((error) => console.error('Error:', error));
+// // Update visitor count
+// fetch(apiEndpointPost, {
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ 
+//         counter: newVisitorCount,
+//         id: visitorCountObject.id,
+//         name: visitorCountObject.name }),
+// })
+// .then(response => response.json())
+// .then(data => {
+//     console.log('Success:', data);
+//     document.getElementById('visitor-count').textContent = newVisitorCount;
+// })
+// .catch((error) => console.error('Error:', error));
