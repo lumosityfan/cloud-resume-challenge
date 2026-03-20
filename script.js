@@ -16,6 +16,6 @@ fetch(apiEndpoint, {
 .then(data => {
     console.log('Visitor count:', data);
     // Update your webpage with the visitor count
-    document.getElementById('visitor-count').textContent = `Visitor Count: ${data[0].counter}`;
+    document.getElementById('visitor-count').textContent = `${data[0].counter}`;
 })
 .catch((error) => console.error('Error:', error));
