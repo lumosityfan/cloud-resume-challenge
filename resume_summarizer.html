@@ -28,11 +28,21 @@
         </div>
      </nav>
      <div class="container-fluid">
-        <h1>Projects</h1>
-        <p>Here are some of the projects I have worked on:</p>
-        <ul>
-            <li><strong>Project 1:</strong> A resume summarizer.</li>
-            <a href="resume_summarizer.html" class="btn btn-primary">View Project</a>
-        </ul>
+        <h1>Resume Summarizer</h1>
+        <p>This is a simple resume summarizer that extracts key information from a resume and presents it in a concise format.</p>
+        <p>It uses Amazon Bedrock to process the resume and generate the summary.</p>
+        <p>Make sure the document is in PDF format. (I will plan to incorporate other formats in the future)</p>
+
+        <div class="mb-3">
+            <form id="resume-summarizer-form">
+                <label for="formFile" class="form-label">Upload your resume (PDF)</label>
+                <input class="form-control" type="file" id="formFile" accept=".pdf">
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Summarize Resume</button>
+                </div>
+            </form>
+            <div id="summary-result" class="mt-4 p-4 border rounded bg-light"></div>
+        </div>
      </div>
+    <script src="resume_summarizer.js" defer></script>
 </body>

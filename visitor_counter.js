@@ -30,38 +30,3 @@ async function fetchAndPost() {
 }
 
 fetchAndPost();
-
-// // Get initial visitor count
-// fetch(apiEndpointGet, {
-//     method: 'GET',
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-// })
-// .then(response => response.json())
-// .then(data => {
-//     visitorCountObject = data;
-//     console.log('Success:', visitorCountObject);
-
-// })
-// .catch((error) => console.error('Error:', error));
-
-// const newVisitorCount = visitorCountObject.counter + 1;
-
-// // Update visitor count
-// fetch(apiEndpointPost, {
-//     method: 'POST',
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({ 
-//         counter: newVisitorCount,
-//         id: visitorCountObject.id,
-//         name: visitorCountObject.name }),
-// })
-// .then(response => response.json())
-// .then(data => {
-//     console.log('Success:', data);
-//     document.getElementById('visitor-count').textContent = newVisitorCount;
-// })
-// .catch((error) => console.error('Error:', error));
