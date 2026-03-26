@@ -12,7 +12,7 @@ async function fetchAndPost() {
         // 2. POST request
         const newVisitorCount = data[0].counter + 1;
         const postResponse = await fetch(apiEndpointPost, {
-            method: 'POST',
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 counter: newVisitorCount,
