@@ -1,17 +1,17 @@
 // Example using fetch in your static site's JavaScript
-const apiEndpointGet = 'https://brdnoy7rm9.execute-api.us-east-2.amazonaws.com/visitor-counter';
-const apiEndpointPost = 'https://brdnoy7rm9.execute-api.us-east-2.amazonaws.com';
+const apiEndpoint = 'https://brdnoy7rm9.execute-api.us-east-2.amazonaws.com/visitor-counter';
 
 async function fetchAndPost() {
     try {
         // 1. GET requst
-        const getResponse = await fetch(apiEndpointGet);
+        const getResponse = await fetch(apiEndpoint);
         if (!getResponse.ok) throw new Error(`GET request failed: ${getResponse.statusText}`);
         const data = await getResponse.json();
+        print(data)
         
         // 2. POST request
         const newVisitorCount = data[0].counter + 1;
-        const postResponse = await fetch(apiEndpointPost, {
+        const postResponse = await fetch(apiEndpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
