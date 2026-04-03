@@ -1,6 +1,6 @@
 // Example using fetch in your static site's JavaScript
-const apiEndpointGet = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/visitor-counter';
-const apiEndpointPost = 'https://p05vz9vxlc.execute-api.us-east-2.amazonaws.com/';
+const apiEndpointGet = 'https://brdnoy7rm9.execute-api.us-east-2.amazonaws.com/visitor-counter';
+const apiEndpointPost = 'https://brdnoy7rm9.execute-api.us-east-2.amazonaws.com';
 
 async function fetchAndPost() {
     try {
