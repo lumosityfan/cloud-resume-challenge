@@ -22,12 +22,35 @@ resource "cloudflare_record" "acm_validation" {
     }
   }
 
-  zone_id = data.cloudflare_zone.cloud-resume-website.id
-  name    = each.value.name
-  type    = each.value.type
-  value   = each.value.value
-  ttl     = 60
-  proxied = false  # must be false for ACM validation
+  zone_id         = data.cloudflare_zone.cloud-resume-website.id
+  name            = each.value.name
+  type            = each.value.type
+  value           = each.value.value
+  ttl             = 60
+  proxied         = false  # must be false for ACM validation
+  allow_overwrite = true
+}
+
+# Root domain CloudFront -> Cloudflare
+resource "cloudflare_record" "cloudfront_cloudflare_base" {
+  zone_id         = data.cloudflare_zone.cloud-resume-website.id
+  name            = "jeffxieresumewebsite.com"
+  content         = aws_cloudfront_distribution.cloud-resume-website.domain_name
+  type            = "CNAME"
+  proxied         = true
+  ttl             = 1
+  allow_overwrite = true
+}
+
+# www domain CloudFront -> Cloudflare
+resource "cloudflare_record" "cloudfront_cloudflare_www" {
+  zone_id         = data.cloudflare_zone.cloud-resume-website.id
+  name            = "www.jeffxieresumewebsite.com"
+  content         = aws_cloudfront_distribution.cloud-resume-website.domain_name
+  type            = "CNAME"
+  proxied         = true
+  ttl             = 1
+  allow_overwrite = true
 }
 
 resource "aws_acm_certificate_validation" "resume" {
@@ -38,7 +61,8 @@ resource "aws_acm_certificate_validation" "resume" {
 # ACM Certificate for root website
 resource "aws_acm_certificate" "cloud-resume-website" {
     provider = aws.us_east_1
-    domain_name = "jeffxieresumewebsie.com"
+    domain_name = "jeffxieresumewebsite.com"
+    subject_alternative_names = ["www.jeffxieresumewebsite.com"]
     validation_method = "DNS"
 
     lifecycle {
@@ -46,91 +70,43 @@ resource "aws_acm_certificate" "cloud-resume-website" {
     }
 }
 
-# ACM certificate for www prefix
-resource "aws_acm_certificate" "cloud-resume-website-www" {
-  provider = aws.us_east_1
-  domain_name = "www.jeffxieresumewebsite.com"
-  validation_method = "DNS"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_s3_bucket" "cloud-resume-challenge" {
-    bucket = "test-cloud-resume-challenge"
-
-    tags = {
-        Name        = "My bucket"
-        Environment = "Dev"
-    }
-}
-
-# Block all public access - CloudFront will access via OAC
-resource "aws_s3_bucket_public_access_block" "cloud-resume-challenge" {
-    bucket = aws_s3_bucket.cloud-resume-challenge.id 
-    block_public_acls = true
-    block_public_policy = true
-    ignore_public_acls = true
-    restrict_public_buckets = true
-}
-
-# Origin Access Control for secure S3 access
-resource "aws_cloudfront_origin_access_control" "s3_oac" {
-    name = "s3-oac"
-    description = "OAC for S3 website bucket"
-    origin_access_control_origin_type = "s3"
-    signing_behavior = "always"
-    signing_protocol = "sigv4"
-}
-
-# Bucket policy allowing CloudFront access via OAC
-resource "aws_s3_bucket_policy" "cloud-resume-challenge" {
-  bucket = aws_s3_bucket.cloud-resume-challenge.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "AllowCloudFrontServicePrincipal"
-        Effect    = "Allow"
-        Principal = {
-          Service = "cloudfront.amazonaws.com"
-        }
-        Action   = "s3:GetObject"
-        Resource = "${aws_s3_bucket.cloud-resume-challenge.arn}/*"
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.cloud-resume-website.arn
-          }
-        }
-      }
-    ]
-  })
-}
-
 # CloudFront distribution serving from S3
 resource "aws_cloudfront_distribution" "cloud-resume-website" {
+    web_acl_id = "arn:aws:wafv2:us-east-1:533266979920:global/webacl/CreatedByCloudFront-f48b3443/1a79d996-461d-4fd6-a0bb-775715b4fd78"
     enabled = true
     is_ipv6_enabled = true
     default_root_object = "index.html"
-    comment = "Website CDN"
-    price_class = "PriceClass_100"
+    comment = "Resume Website for Cloud Resume Challenge"
+    price_class = "PriceClass_All"
 
-    aliases = ["jeffxieresumewebsite.com"]
+    aliases = ["jeffxieresumewebsite.com", "www.jeffxieresumewebsite.com"]
 
     # S3 origin configuration
     origin {
-        domain_name = aws_s3_bucket.cloud-resume-challenge.bucket_regional_domain_name
-        origin_id = "s3-website"
-        origin_access_control_id = aws_cloudfront_origin_access_control.s3_oac.id 
+      domain_name = "jeffxieresumewebsite.com.s3-website.us-east-2.amazonaws.com"
+      origin_id   = "jeffxieresumewebsite.com.s3.us-east-2.amazonaws.com-mmjjc4xckav"
+
+      custom_origin_config {
+        http_port              = 80
+        https_port             = 443
+        origin_keepalive_timeout = 5
+        origin_protocol_policy = "http-only"
+        origin_ssl_protocols   = [
+          "TLSv1.2",
+          "SSLv3",
+          "TLSv1.1",
+          "TLSv1"
+          ]
+        ip_address_type          = "ipv4"
+        origin_read_timeout      = 30
+      }
     }
 
     # Default cache behavior
     default_cache_behavior {
         allowed_methods        = ["GET", "HEAD", "OPTIONS"]
         cached_methods         = ["GET", "HEAD"]
-        target_origin_id       = "s3-website"
+        target_origin_id       = "jeffxieresumewebsite.com.s3.us-east-2.amazonaws.com-mmjjc4xckav"
         viewer_protocol_policy = "redirect-to-https"
 
         # Use a managed cache policy
@@ -161,7 +137,8 @@ resource "aws_cloudfront_distribution" "cloud-resume-website" {
     viewer_certificate {
         acm_certificate_arn = aws_acm_certificate_validation.resume.certificate_arn
         ssl_support_method = "sni-only"
-        minimum_protocol_version = "TLSv1.2_2021"
+        cloudfront_default_certificate = true
+        minimum_protocol_version = "TLSv1"
     }
 
     tags = {
