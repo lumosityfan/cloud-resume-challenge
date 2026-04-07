@@ -9,7 +9,7 @@ async function fetchAndPost() {
         const data = await response.json();
         const postResponse = await fetch(apiEndpointPost, { method: 'POST', 
                                                             headers: { 'Content-Type': 'application/json' }, 
-                                                            body: JSON.stringify(data) });
+                                                            body: JSON.stringify(data[0]) });
         if (!postResponse.ok) throw new Error(`POST request failed: ${postResponse.statusText}`);
         const postData = await postResponse.json();
         document.getElementById('visitor-count').textContent = postData[0].counter;
