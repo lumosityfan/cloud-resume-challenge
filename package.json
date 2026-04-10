@@ -10,5 +10,9 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@types/node": "^25.5.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1028.0",
+    "@aws-sdk/lib-dynamodb": "^3.1028.0"
   }
 }
