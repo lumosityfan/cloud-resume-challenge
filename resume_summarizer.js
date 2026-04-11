@@ -1,4 +1,4 @@
-const apiEndpoint = 'https://xt9kqsik74.execute-api.us-east-2.amazonaws.com/resume-summarizer';
+const apiEndpoint = 'https://oewttkdxce.execute-api.us-east-2.amazonaws.com/resume-summarizer';
 
 // Get resume summarizer form information
 const resume_summarizer_form = document.getElementById('resume-summarizer-form');

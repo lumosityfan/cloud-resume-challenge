@@ -15,7 +15,7 @@ test('has title', async ({ page }) => {
 test('visitor counter increments', async ({ page }) => {
     let pageLoads = 0;
 
-    await page.route('https://xt9kqsik74.execute-api.us-east-2.amazonaws.com/visitorCount', async (route) => {
+    await page.route('https://lpg2mo81f3.execute-api.us-east-2.amazonaws.com/visitorCount', async (route) => {
         console.log('Mock intercepted GET visitorCount');
         await route.fulfill({
             status: 200,
@@ -24,7 +24,7 @@ test('visitor counter increments', async ({ page }) => {
         });
     });
 
-    await page.route('https://xt9kqsik74.execute-api.us-east-2.amazonaws.com/visitorCount/increment', async (route) => {
+    await page.route('https://lpg2mo81f3.execute-api.us-east-2.amazonaws.com/visitorCount/increment', async (route) => {
         console.log('Mock intercepted POST to increment');
         pageLoads++;
         await route.fulfill({
