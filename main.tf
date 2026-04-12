@@ -111,7 +111,7 @@ resource "aws_cloudfront_distribution" "cloud-resume-website" {
 
     # Use a managed cache policy
     cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized
-
+    default_ttl = 60
     compress = true
   }
 
@@ -119,13 +119,13 @@ resource "aws_cloudfront_distribution" "cloud-resume-website" {
   custom_error_response {
     error_code         = 403
     response_code      = 200
-    response_page_path = "/index.html"
+    response_page_path = "/index_error.html"
   }
 
   custom_error_response {
     error_code         = 404
     response_code      = 200
-    response_page_path = "/index.html"
+    response_page_path = "/index_error.html"
   }
 
   restrictions {

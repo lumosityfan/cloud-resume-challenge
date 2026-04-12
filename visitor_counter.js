@@ -15,7 +15,10 @@ async function fetchAndPost() {
             }
         }
         const postResponse = await fetch(apiEndpointPost, { method: 'POST', 
-                                                            headers: { 'Content-Type': 'application/json' }, 
+                                                            headers: { 
+                                                                'Content-Type': 'application/json',
+                                                                'Cache-Control': 'no-cache'
+                                                            }, 
                                                             body: JSON.stringify(data[0]) });
         if (!postResponse.ok) throw new Error(`POST request failed: ${postResponse.statusText}`);
         const postData = await postResponse.json();
