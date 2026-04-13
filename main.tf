@@ -111,8 +111,8 @@ resource "aws_cloudfront_distribution" "cloud-resume-website" {
 
     # Use a managed cache policy
     cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized
-    default_ttl = 60
-    compress = true
+    default_ttl     = 60
+    compress        = true
   }
 
   # Custom error response for SPA routing
