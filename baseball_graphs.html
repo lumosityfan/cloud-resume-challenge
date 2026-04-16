@@ -43,22 +43,82 @@
             </div>
         </div>
      </nav>
-     <div class="container-fluid max-w-4xl mx-auto px-6 py-12 space-y-10">
-        <h1>Resume Summarizer</h1>
-        <p>This is a simple resume summarizer that extracts key information from a resume and presents it in a concise format.</p>
-        <p>It uses Amazon Bedrock to process the resume and generate the summary.</p>
-        <p>Make sure the document is in PDF format. (I will plan to incorporate other formats in the future)</p>
+     <div class="container-fluid">
+        <!-- Title and Meta -->
+        <div>
+          <h2 class="text-3xl font-bold mb-2">Baseball Visualizations</h2>
+          <p class="text-gray-700 dark:text-gray-500">
+            Personal Project — Sports Analytics & Interactive Data Visualization
+          </p>
 
-        <div class="mb-3">
-            <form id="resume-summarizer-form">
-                <label for="formFile" class="form-label">Upload your resume (PDF)</label>
-                <input class="form-control" type="file" id="formFile" accept=".pdf">
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Summarize Resume</button>
-                </div>
-            </form>
-            <div id="summary-result" class="mt-4 p-4 border rounded bg-light"></div>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <span class="badge bg-primary">Datawrapper</span>
+            <span class="badge bg-primary">Baseball-Reference</span>
+            <span class="badge bg-primary">Data Visualization</span>
+            <span class="badge bg-primary">Sports Analytics</span>
         </div>
+        </div>
+        <!-- Overview -->
+        <section>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-500 mb-2">Overview</h3>
+          <p class="text-gray-700 dark:text-gray-500">
+            This project explores long-term trends in Major League Baseball performance through
+            interactive visualizations built on historical data from Baseball-Reference. Both pitching
+            and batting statistics are examined across multiple decades, revealing how the game has
+            evolved in its fundamental dynamics — from strikeout rates to batting averages and home run trends.
+          </p>
+        </section>
+        <!-- Pitching -->
+        <section>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-500 mb-2">
+            Pitching Statistics Visualization
+          </h3>
+          <p class="text-gray-700 dark:text-gray-500 mb-4">
+            Built from Baseball-Reference's annual league averages, this chart focuses on key rate
+            statistics — H/9, BB/9, SO/9, and HR/9 — that capture a pitcher's effectiveness independent
+            of playing time. The interactive line chart allows direct comparison across eras, highlighting
+            shifts like the modern strikeout surge and declining hit rates.
+          </p>
+          <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+            <iframe
+              title="Pitching Statistics Over Time"
+              aria-label="Interactive line chart"
+              id="datawrapper-chart-DlmNc"
+              src="https://datawrapper.dwcdn.net/DlmNc/3/"
+              scrolling="no"
+              frameBorder="0"
+              class="w-full"
+              width="100%"
+              height="400"
+              data-external="1"
+            ></iframe>
+          </div>
+        </section>
+        <!-- Batting -->
+        <section>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-500 mb-2">
+            Batting Statistics Visualization
+          </h3>
+          <p class="text-gray-700 dark:text-gray-500 mb-4">
+            A companion visualization using the same methodology applied to batting statistics.
+            Tracking metrics like batting average, on-base percentage, and slugging over time reveals
+            how offensive production has shifted across different eras of the game — from the
+            dead-ball era through the steroid era to today's three-true-outcomes environment.
+          </p>
+          <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+            <iframe
+              title="Batting Statistics"
+              aria-label="Interactive line chart"
+              id="datawrapper-chart-xwqlj"
+              src="https://datawrapper.dwcdn.net/xwqlj/1/"
+              scrolling="no"
+              frameBorder="0"
+              class="w-full"
+              width="100%"
+              height="400"
+              data-external="1"
+            ></iframe>
+          </div>
+        </section>
      </div>
-    <script src="resume_summarizer.js" defer></script>
 </body>
