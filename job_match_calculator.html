@@ -43,26 +43,50 @@
             </div>
         </div>
      </nav>
-     <div class="container-fluid max-w-4xl mx-auto px-6 py-12 space-y-10">
-        <h1>Projects</h1>
-        <p>Here are some of the projects I have worked on:</p>
-        <ul>
-            <li><strong>Project 1:</strong> A resume summarizer.</li>
-            <a href="resume_summarizer.html" class="btn btn-primary">View Project</a>
-            <li><strong>Project 2:</strong> A spacesuit testing apparatus.</li>
-            <a href="spacesuit_testing.html" class="btn btn-primary">View Project</a>
-            <li><strong>Project 3:</strong> A PCA Analysis Tool.</li>
-            <a href="pca_analysis.html" class="btn btn-primary">View Project</a>
-            <li><strong>Project 4:</strong> A random walk simulator.</li>
-            <a href="random_walk.html" class="btn btn-primary">View Project</a>
-            <li><strong>Project 5:</strong> A set of Tableau visualizations.</li>
-            <a href="tableau_visualizations.html" class="btn btn-primary">View Project</a>
-            <li><strong>Project 6:</strong> A set of baseball graphs.</li>
-            <a href="baseball_graphs.html" class="btn btn-primary">View Project</a>
-            <li><strong>Project 7:</strong> A chatbot with my digital avatar.</li>
-            <a href="chatbot.html" class="btn btn-primary">View Project</a>
-            <li><strong>Project 8:</strong> A job match calculator.</li>
-            <a href="job_match_calculator.html" class="btn btn-primary">View Project</a>
-        </ul>
-     </div>
+    <!-- Upload Resume -->
+    <div class="container mt-5 mb-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form id="JobMatchForm" enctype="multipart/form-data">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3>Upload Your Resume</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="resume" class="form-label">Choose a file</label>
+                                <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3>Job Description</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="nav nav-tabs mb-3" id="jobInputTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text-pane" type="button" role="tab">Paste Text</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="url-tab" data-bs-toggle="tab" data-bs-target="#url-pane" type="button" role="tab">Paste URL</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="text-pane" role="tabpanel">
+                                    <textarea class="form-control" id="jobDescription" name="jobDescription" rows="5" placeholder="Paste the job description here"></textarea>
+                                </div>
+                                <div class="tab-pane fade" id="url-pane" role="tabpanel">
+                                    <input type="text" class="form-control" id="jobUrl" name="jobUrl" placeholder="https://company.com/careers/job-posting">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <div id="output"></div>
+            </div>
+        </div>
+    </div>
+    <script src="job_match_calculator.js" defer></script>
 </body>
