@@ -3,6 +3,10 @@ const apiEndpoint = 'https://oewttkdxce.execute-api.us-east-2.amazonaws.com/job-
 document.getElementById("JobMatchForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Declare this first — referencing it before this line (as a bare
+    // global) threw a ReferenceError and silently killed the handler.
+    const output = document.getElementById("output");
+
     const jobDescription = document.getElementById("jobDescription").value.trim();
     const jobUrl = document.getElementById("jobUrl").value.trim();
     const fileInput = document.getElementById("resume");
@@ -25,7 +29,6 @@ document.getElementById("JobMatchForm").addEventListener("submit", async (e) => 
         return;
     }
 
-    const output = document.getElementById("output");
     output.innerHTML = `
         <div class="text-center mt-4">
             <div class="spinner-border text-primary" role="status"></div>
@@ -33,18 +36,25 @@ document.getElementById("JobMatchForm").addEventListener("submit", async (e) => 
         </div>
     `;
 
-    const formData = new FormData();
-    if (jobDescription) formData.append("jobDescription", jobDescription);
-    if (jobUrl) formData.append("jobUrl", jobUrl);
-    if (fileInput.files[0]) {
-        formData.append("resume", fileInput.files[0]);
-    }
-
     try {
+        const file = fileInput.files[0];
+        const pdfBase64 = await fileToBase64(file);
+
+        const payload = {
+            pdfBase64: pdfBase64,
+            pdfFilename: file.name
+        };
+        if (jobDescription) payload.jobDescription = jobDescription;
+        if (jobUrl) payload.jobUrl = jobUrl;
+
         const res = await fetch(apiEndpoint, {
             method: "POST",
-            body: formData
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
         });
+
         const data = await res.json();
 
         if (data.error) {
@@ -66,6 +76,21 @@ document.getElementById("JobMatchForm").addEventListener("submit", async (e) => 
         `;
     }
 });
+
+// Reads a File and resolves to just the base64 payload (strips the
+// "data:<mime>;base64," prefix that readAsDataURL adds).
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result;
+            const base64 = result.split(",")[1];
+            resolve(base64);
+        };
+        reader.onerror = () => reject(new Error("Failed to read the file"));
+        reader.readAsDataURL(file);
+    });
+}
 
 function scoreColor(score) {
     if (score >= 75) return "success";
