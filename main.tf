@@ -14,18 +14,21 @@ data "cloudflare_zone" "cloud-resume-website" {
 
 # Root domain CNAME -> CloudFront
 resource "cloudflare_record" "acm_validation" {
+  # Key by record name and group with "..." so the identical
+  # apex/www validation records collapse into one.
   for_each = {
-    for dvo in aws_acm_certificate.cloud-resume-website.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.cloud-resume-website.domain_validation_options :
+    dvo.resource_record_name => {
       name  = dvo.resource_record_name
-      value = dvo.resource_record_value
+      value = trimsuffix(dvo.resource_record_value, ".")
       type  = dvo.resource_record_type
-    }
+    }...
   }
 
   zone_id         = data.cloudflare_zone.cloud-resume-website.id
-  name            = each.value.name
-  type            = each.value.type
-  value           = each.value.value
+  name            = each.value[0].name
+  type            = each.value[0].type
+  content         = each.value[0].value
   ttl             = 60
   proxied         = false # must be false for ACM validation
   allow_overwrite = true
@@ -54,6 +57,7 @@ resource "cloudflare_record" "cloudfront_cloudflare_www" {
 }
 
 resource "aws_acm_certificate_validation" "resume" {
+  provider                = aws.us_east_1
   certificate_arn         = aws_acm_certificate.cloud-resume-website.arn
   validation_record_fqdns = [for record in cloudflare_record.acm_validation : record.hostname]
 }
@@ -93,9 +97,6 @@ resource "aws_cloudfront_distribution" "cloud-resume-website" {
       origin_protocol_policy   = "http-only"
       origin_ssl_protocols = [
         "TLSv1.2",
-        "SSLv3",
-        "TLSv1.1",
-        "TLSv1"
       ]
       ip_address_type     = "ipv4"
       origin_read_timeout = 30
@@ -135,10 +136,9 @@ resource "aws_cloudfront_distribution" "cloud-resume-website" {
   }
 
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate_validation.resume.certificate_arn
-    ssl_support_method             = "sni-only"
-    cloudfront_default_certificate = true
-    minimum_protocol_version       = "TLSv1"
+    acm_certificate_arn      = aws_acm_certificate_validation.resume.certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   tags = {
