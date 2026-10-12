@@ -1,4 +1,4 @@
-const apiEndpoint = 'https://oewttkdxce.execute-api.us-east-2.amazonaws.com/job-match-calculator';
+const apiEndpoint = 'https://xrmv6v9b8h.execute-api.us-east-2.amazonaws.com/job-match-calculator';
 
 document.getElementById("JobMatchForm").addEventListener("submit", async (e) => {
     e.preventDefault();
