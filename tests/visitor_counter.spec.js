@@ -15,7 +15,7 @@ test('has title', async ({ page }) => {
 test('visitor counter increments', async ({ page }) => {
     let pageLoads = 0;
 
-    await page.route('https://oewttkdxce.execute-api.us-east-2.amazonaws.com/visitorCount', async (route) => {
+    await page.route('https://xrmv6v9b8h.execute-api.us-east-2.amazonaws.com/visitorCount', async (route) => {
         await route.fulfill({
             status: 200,
             contentType: 'application/json',
@@ -23,7 +23,7 @@ test('visitor counter increments', async ({ page }) => {
         });
     });
 
-    await page.route('https://oewttkdxce.execute-api.us-east-2.amazonaws.com/visitorCount/increment', async (route) => {
+    await page.route('https://xrmv6v9b8h.execute-api.us-east-2.amazonaws.com/visitorCount/increment', async (route) => {
         pageLoads++;
         await route.fulfill({
             status: 200,
