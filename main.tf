@@ -18,19 +18,19 @@ resource "cloudflare_record" "acm_validation" {
   # apex/www validation records collapse into one.
   for_each = {
     for dvo in aws_acm_certificate.cloud-resume-website.domain_validation_options :
-    dvo.resource_record_name => {
+    dvo.domain_name => {
       name  = dvo.resource_record_name
       value = trimsuffix(dvo.resource_record_value, ".")
       type  = dvo.resource_record_type
-    }...
+    }
   }
 
   zone_id         = data.cloudflare_zone.cloud-resume-website.id
-  name            = each.value[0].name
-  type            = each.value[0].type
-  content         = each.value[0].value
+  name            = each.value.name
+  type            = each.value.type
+  content         = each.value.value
   ttl             = 60
-  proxied         = false # must be false for ACM validation
+  proxied         = false
   allow_overwrite = true
 }
 
